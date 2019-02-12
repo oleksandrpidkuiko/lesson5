@@ -1,23 +1,23 @@
 (function () {
     let tasks = {
-            current: [{
-                taskId: doId(),
-                taskContent: "Прийти на лекцію з geekhub",
-                taskState: "current"
-            }
-            ],
-            done: [{
-                taskId: doId(),
-                taskContent: "Винести щось корисне і чосусь навчитися",
-                taskState: "done"
-            }],
-            get allTasks() {
-                return this.current.length + this.done.length;
-            },
-            get doneTasks() {
-                return this.done.length;
-            }
-        };
+        current: [{
+            taskId: doId(),
+            taskContent: "Прийти на лекцію з geekhub",
+            taskState: "current"
+        }
+        ],
+        done: [{
+            taskId: doId(),
+            taskContent: "Винести щось корисне і чосусь навчитися",
+            taskState: "done"
+        }],
+        get allTasks() {
+            return this.current.length + this.done.length;
+        },
+        get doneTasks() {
+            return this.done.length;
+        }
+    };
     let tasksList = document.getElementById("list");
     let allTasks = document.getElementById("all-tasks");
     let doneTasks = document.getElementById("done-tasks");
@@ -27,9 +27,11 @@
         for (let item of tasks.current) {
             createItem(item);
         }
+
         for (let item of tasks.done) {
             createItem(item);
         }
+
         allTasks.innerHTML = tasks.allTasks;
         doneTasks.innerHTML = tasks.doneTasks;
     }
@@ -38,6 +40,7 @@
         let item = document.createElement('li');
         let remove = document.createElement('div');
         let text = document.createElement('span');
+
         remove.classList.add('list-remove');
         remove.addEventListener('click', function () {
             removeTask(this);
@@ -46,13 +49,15 @@
         text.addEventListener('click', function () {
             doneTask(this);
         });
+
         switch (element.taskState) {
             case 'done':
                 item.classList.add('list-item', 'list-item--done');
                 break;
             default:
-                    item.classList.add('list-item');
+                item.classList.add('list-item');
         }
+
         item.id = element.taskId;
         text.innerHTML = element.taskContent;
         item.appendChild(text);
@@ -67,7 +72,9 @@
 
         const [itemsRemove, itemsAdd] = elemState ? [tasks.done, tasks.current] : [tasks.current, tasks.done];
         elem.classList.toggle('list-item--done');
+
         for (const [index, item] of itemsRemove.entries()) {
+
             if (item.taskId !== elemId) continue;
             itemsAdd.push(item);
             itemsRemove.splice(index, 1);
@@ -82,7 +89,9 @@
 
         removeEl.remove();
         const items = removeElState ? tasks.done : tasks.current;
+
         for (const [index, item] of items.entries()) {
+
             if (item.taskId !== removeElId) continue;
             items.splice(index, 1);
         }
@@ -96,9 +105,21 @@
             taskContent: str,
             taskState: "current"
         };
-        tasks.current.push(elem);
-        createItem(elem);
-        allTasks.innerHTML = tasks.allTasks;
+        if (validate(str)){
+            tasks.current.push(elem);
+            createItem(elem);
+            allTasks.innerHTML = tasks.allTasks;
+            newTask.classList.remove('invalid');
+        } else {
+            newTask.classList.add('invalid');
+            alert('Задача не может быть пустой строкой')
+        }
+    }
+
+    function validate(task) {
+        if (task.trim() === '')
+            return false;
+        return true;
     }
 
     function doId() {
@@ -107,8 +128,9 @@
 
     startList();
 
-    newTask.addEventListener('keyup',function (e) {
-        if(e.keyCode === 13) {
+    newTask.addEventListener('keyup', function (e) {
+
+        if (e.keyCode === 13) {
             addTasks(this.value);
             this.value = "";
         }

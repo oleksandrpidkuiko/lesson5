@@ -42,6 +42,7 @@ ul, li {
     flex: 1;
     line-height: 24px;
     padding: 8px 16px;
+    word-break: break-all;
 }
 .list-remove {
     border: 1px solid red;
@@ -75,9 +76,13 @@ ul, li {
     width: 3px;
 }
 .list__task-new {
+    margin-top: 20px;
     border: 1px solid blue;
     line-height: 40px;
     min-height: 40px;
     padding: 0 8px;
     width: 100%;
+}
+.invalid{
+    border: 1px solid red;
 }
